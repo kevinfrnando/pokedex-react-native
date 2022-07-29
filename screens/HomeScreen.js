@@ -1,14 +1,23 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, ImageBackground, StyleSheet } from "react-native";
 
 
 const HomeScreen = () =>{
 
     return (
-        <View>
-            <Text>Home Screm</Text>
+        <View style={styles.container}>
+            <ImageBackground source={ require('../assets/img/background.jpg') } resizeMode="cover" style={styles.image}/>
         </View>
     )
 }
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    image: {
+      flex: 1,
+      justifyContent: "center"
+    }
+});
 
 export default HomeScreen;

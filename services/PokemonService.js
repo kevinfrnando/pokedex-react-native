@@ -1,6 +1,6 @@
-export const GET_POKEMONS = async ( paginated = null ) =>{
-    if( paginated != null ){
-        return fetch( paginated , {
+export const GET_POKEMONS = async ( nextPrevious = null ) =>{
+    if( nextPrevious != null ){
+        return fetch( nextPrevious , {
             method: 'GET'
         })
         .then( ( res ) => res.json())
@@ -10,7 +10,7 @@ export const GET_POKEMONS = async ( paginated = null ) =>{
             method: 'GET'
         })
         .then( ( res ) => res.json())
-        .catch( ( rej ) => rej.json() );
+        .catch( ( rej ) => { return rej } );
     }
 };
 
@@ -20,8 +20,26 @@ export const FIND_POKEMON = async ( pokemon ) =>{
         method: 'GET'
     })
     .then( ( res ) => res.json() )
-    .catch( ( rej ) => rej.json() );
+    .then( ( res ) =>{
+        if( res.status === 404 ){
+            return {
+                data : {},
+                message : 'Pokemon Not Found'
+            }
+        }else{
+            return {
+                data : res,
+                message : ''
+            };
+        }
+    } )
+    .catch( ( ) => {
+        return {
+            data : {},
+            message : 'Pokemon Not Found'
+    }} );
 };
+
 
 
 
