@@ -1,17 +1,28 @@
 export const GET_POKEMONS = async ( nextPrevious = null ) =>{
-    if( nextPrevious != null ){
-        return fetch( nextPrevious , {
-            method: 'GET'
-        })
-        .then( ( res ) => res.json())
-        .catch( ( rej ) => rej.json() ) ;
-    }else{
-        return fetch('https://pokeapi.co/api/v2/pokemon?limit=8', {
-            method: 'GET'
-        })
-        .then( ( res ) => res.json())
-        .catch( ( rej ) => { return rej } );
-    }
+
+    const endPoint = nextPrevious ?? 'https://pokeapi.co/api/v2/pokemon?limit=8';
+    return fetch( endPoint , {
+        method: 'GET'
+    })
+    .then( ( res ) => res.json())
+    .then( ( res ) =>{
+        if( res.status === 404 ){
+            return {
+                data : [],
+                message : 'Not Data Matched'
+            }
+        }else{
+            return {
+                data : res,
+                message : ''
+            };
+        }
+    } )
+    .catch( ( ) => {
+        return {
+            data : [],
+            message : 'Not Data Matched'
+    }}  );
 };
 
 

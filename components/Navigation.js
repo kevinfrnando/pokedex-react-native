@@ -1,4 +1,4 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+// import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer} from '@react-navigation/native'
 import HomeScreen from "../screens/HomeScreen.js";
 import ListScreen from "../screens/ListScreen.js";
@@ -6,9 +6,12 @@ import { FontAwesome } from '@expo/vector-icons';
 import SearchScreen from "../screens/SearchScreen.js";
 import { StyleSheet, View, ImageBackground } from 'react-native';
 import { useEffect, useState } from "react";
-import { Audio } from 'expo-av';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
-const Tab = createBottomTabNavigator();
+const Tab = createMaterialBottomTabNavigator();
+
+
+
 
 function MyTabs(){
     
@@ -17,7 +20,7 @@ function MyTabs(){
             initialRouteName="Home"
             barStyle={{ backgroundColor: 'tomato' }}
             screenOptions={
-                { tabBarActiveTintColor: 'purple' , headerShown: false, backgroundColor: 'red'}
+                { tabBarActiveTintColor: 'purple' , headerShown: false, backgroundColor: 'black'}
             }> 
             <Tab.Screen 
                 name="Search" 
@@ -47,50 +50,44 @@ function MyTabs(){
     )
 };
 const styles = StyleSheet.create({
-    container: {
-      backgroundColor : 'red',
+    container: {  
+        backgroundColor : '#fa0001'
     },
     containerLoading: {
         flex: 1,
     },
     image: {
       flex: 1,
-      justifyContent: "center"
+      justifyContent: "center",
+      backgroundColor : '#fa0001'
     }
 }); 
 
 
 
 export default function Navigation (){
-    const [sound, setSound] = useState();
     const [ loading, setLoading ] = useState( false );
 
-    async function playSound()  {
-        const { sound } = await Audio.Sound.createAsync(
-           require('../assets/audio/sound.mp3')
-        );
-        setSound( sound );
-        await sound.playAsync(); 
-    }
     useEffect( ()=>{
 
         setLoading( true );
         setTimeout( ()=> {
-            // playSound();
             setLoading( false );
-        }, 3500)
+        }, 4500)
     }, []);
     return (
         <NavigationContainer>
+
             {
                 loading 
                 ?
                 <View style={styles.containerLoading}>
-                    <ImageBackground source={ require('../assets/splash.gif') } resizeMode="cover" style={styles.image}/>
+                    <ImageBackground source={ require('../assets/splash.gif') } resizeMode="contain" style={styles.image} />
                 </View>
                 :
                 <MyTabs/>
             }
+
         </NavigationContainer>
     )
 };

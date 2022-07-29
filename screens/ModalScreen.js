@@ -29,7 +29,7 @@ const ModalScreen = ( {modalVisible, setModalVisible, modalContent, pokemon } ) 
                             <Text style={styles.textStyle}>Close</Text>
                         </Pressable>
                     </View>
-                    </View>
+                </View>
             </Modal>
         </View>
     )

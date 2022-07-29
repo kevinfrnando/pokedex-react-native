@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { SafeAreaView, TextInput, StyleSheet,TouchableOpacity, View, Keyboard } from "react-native";
+import React, { useEffect, useState } from "react";
+import { SafeAreaView, TextInput, StyleSheet,TouchableOpacity, View, Keyboard, Alert } from "react-native";
 import { FIND_POKEMON } from "../services/PokemonService";
 import LoadingScreen from "./LoadingScreen";
 import PokemonScreen from "./PokemonScreen";
@@ -7,10 +7,10 @@ import { FontAwesome } from '@expo/vector-icons';
 
 
 
-const SearchScreen = ( { route } ) =>{
+const SearchScreen = ( { route } ) => {
     
 
-    const [ name, setName ] = useState( '' );
+    const [ name, setName ] = useState( ''  );
     const [ pokemon, setPokemon ] = useState( {} );
     const [ loading, setLoading ] = useState( false );
     const [ message, setMessage ] = useState( "" );
@@ -27,9 +27,20 @@ const SearchScreen = ( { route } ) =>{
         setLoading( false );
     }
 
-    useState( ()=>{
+    useEffect( () =>{
+        setName( route?.params?.name ?? '' )
         getPokemon( route?.params?.name ?? '' );
-    }, [route])
+    }, [ route ]);
+
+
+    const findPokemon = () =>{
+        if( name.trim() != '' ){
+            getPokemon( name ) 
+        }else{
+            Alert.alert('Please write a pokemon name');
+        }
+    }
+
     return (
         <SafeAreaView style={ styles.container}>
             <View style={ styles.searchInputs}>
@@ -39,19 +50,18 @@ const SearchScreen = ( { route } ) =>{
                     keyboardType='default'
                     onChangeText={ setName }
                     placeholder=" Type a pokemon "
-                />
-                <TouchableOpacity onPress={ () => getPokemon( name )}>
+                /> 
+                <TouchableOpacity onPress={ () => findPokemon() }>
                     <View style={styles.searchButton}>
                         <FontAwesome name="search" size={30} color="black" />
                     </View>
                 </TouchableOpacity>
             </View>
-
-            { 
+            {  
                 loading ?
                 <LoadingScreen/>
                 :
-                <PokemonScreen pokemon={ pokemon } message={ message }/>                  
+                <PokemonScreen pokemon={ pokemon } message={ message } name={name}/>                  
             }
             
         </SafeAreaView>
@@ -63,16 +73,17 @@ const styles = StyleSheet.create({
         backgroundColor : 'red',
     },  
     searchInputs :{
+        flex : 1,
         display: 'flex',
         flexDirection : 'row',
     },
 
     searchInput: {
-      height: 40,
-      width: '80%',
-      margin: 12,
-      borderWidth: 1,
-      padding: 10,
+        height: 40,
+        width: '80%',
+        margin: 12,
+        borderWidth: 1,
+        padding: 10,
     },
     searchButton :{
         display: 'flex',

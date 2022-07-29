@@ -6,7 +6,7 @@ const HomeScreen = () =>{
 
     return (
         <View style={styles.container}>
-            <ImageBackground source={ require('../assets/img/background.jpg') } resizeMode="cover" style={styles.image}/>
+            <ImageBackground source={ require('../assets/img/background.jpg') } resizeMode="contain" style={styles.image}/>
         </View>
     )
 }
@@ -16,7 +16,8 @@ const styles = StyleSheet.create({
     },
     image: {
       flex: 1,
-      justifyContent: "center"
+      justifyContent: "center",
+      backgroundColor : '#fa0001'
     }
 });
 

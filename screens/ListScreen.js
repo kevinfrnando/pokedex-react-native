@@ -8,11 +8,11 @@ import { AntDesign } from '@expo/vector-icons';
 const ListScreen = ( { navigation } ) =>{
 
     const imageUrl = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/';
-    const [ pokemons, setPokemons ] = useState( [{}] );
+    const [ pokemons, setPokemons ] = useState( [] );
     const [ previous, setPrevious ] = useState("");
+    const [ message, setMessage ] = useState("");
     const [ next, setNext ] = useState("");
     const [ loading, setLoading ] = useState( false );
-    
 
 
     useEffect( () => {
@@ -22,9 +22,10 @@ const ListScreen = ( { navigation } ) =>{
     const getPokemons = async ( nextPrevious ) => {
         setLoading( true );
         const response = await GET_POKEMONS( nextPrevious );
-        setPokemons( response.results );
-        setPrevious( response.previous );
-        setNext( response.next );
+        setPokemons( response.data.results );
+        setPrevious( response.data.previous );
+        setNext( response.data.next );
+        setMessage( response.data.message );
         setLoading( false );
     }
 
@@ -39,7 +40,7 @@ const ListScreen = ( { navigation } ) =>{
             </View>
         </TouchableOpacity>
         
-    );
+    ); 
 
     const renderItem = ({ item  }) => (
         <Item title={ getCapitalized( item.name ) } url={ item.url }/>
@@ -53,7 +54,7 @@ const ListScreen = ( { navigation } ) =>{
                     <LoadingScreen/>
                 </View>
                 :
-                <View>
+                <View style={ { flex: 1 } }>
                     <FlatList                 
                         data={ pokemons }
                         renderItem={renderItem}
@@ -89,17 +90,18 @@ const styles = StyleSheet.create({
       backgroundColor : 'red',
     },
     item: {
+        flex : 1,
         flexDirection : 'row',
         alignItems : 'center',
-        height: 70,
+        height: 60,
         backgroundColor: 'rgba(35, 36, 38, 0.5)',
         padding: 5,
         marginVertical: 8,
         marginHorizontal: 16,
-        borderRadius : '10%'
+        borderRadius : 10
     },
     tinyLogo: {
-        width: '20%',
+        width: 40,
         height: 50,
     },
     title: {
